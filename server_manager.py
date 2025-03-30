@@ -8,13 +8,14 @@ from typing import List, Optional
 class ServerManager:
     def __init__(self):
         self.processes: List[subprocess.Popen] = []
+        self.root_dir = os.path.dirname(os.path.abspath(__file__))
         
     def start_backend(self) -> None:
         """Start the backend server"""
         print("Starting Backend Server...")
         backend_cmd = [
             "cmd", "/c",
-            "cd backend && .\\.venv\\Scripts\\activate && uvicorn main:app --reload"
+            f"cd {os.path.join(self.root_dir, 'backend')} && .\\.venv\\Scripts\\activate && uvicorn main:app --reload"
         ]
         backend_process = subprocess.Popen(
             backend_cmd,
@@ -26,9 +27,14 @@ class ServerManager:
     def start_frontend(self) -> None:
         """Start the frontend server"""
         print("Starting Frontend Server...")
+        frontend_dir = os.path.join(self.root_dir, 'frontend')
+        if not os.path.exists(frontend_dir):
+            print(f"Frontend directory not found at {frontend_dir}")
+            return
+            
         frontend_cmd = [
             "cmd", "/c",
-            "cd frontend && npm run dev"
+            f"cd {frontend_dir} && npm run dev"
         ]
         frontend_process = subprocess.Popen(
             frontend_cmd,
