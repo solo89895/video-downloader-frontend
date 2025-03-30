@@ -2,8 +2,12 @@ services:
   - type: web
     name: video-downloader-backend
     env: python
-    buildCommand: pip install -r requirements.txt
-    startCommand: uvicorn src.pages.api.ytdlp_new:app --host 0.0.0.0 --port $PORT
+    buildCommand: pip install -r backend/requirements.txt
+    startCommand: cd backend && uvicorn main:app --host 0.0.0.0 --port $PORT
     envVars:
       - key: PYTHON_VERSION
-        value: 3.11.0 
+        value: 3.9.0
+      - key: RAPIDAPI_KEY
+        sync: false
+      - key: FRONTEND_URL
+        sync: false 
