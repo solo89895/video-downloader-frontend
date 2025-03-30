@@ -18,6 +18,10 @@ import hashlib
 import requests
 import io
 import ffmpeg
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
 
 # Configure logging
 logging.basicConfig(
@@ -27,25 +31,12 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 # API Configuration
-RAPIDAPI_KEY = "408bb9589amsh1872fe8447998b3p14706bjsnc0f242a84e50"  # Updated RapidAPI key
-API_CONFIGS = {
-    "youtube": {
-        "url": "https://yt-video-download.p.rapidapi.com/downloads/mp4",
-        "host": "yt-video-download.p.rapidapi.com"
-    },
-    "tiktok": {
-        "url": "https://tiktok-video-no-watermark2.p.rapidapi.com/",
-        "host": "tiktok-video-no-watermark2.p.rapidapi.com"
-    },
-    "instagram": {
-        "url": "https://instagram-video-downloader-download-instagram-videos-stories.p.rapidapi.com/index",
-        "host": "instagram-video-downloader-download-instagram-videos-stories.p.rapidapi.com"
-    },
-    "facebook": {
-        "url": "https://facebook-reel-and-video-downloader.p.rapidapi.com/app/main.php",
-        "host": "facebook-reel-and-video-downloader.p.rapidapi.com"
-    }
-}
+RAPIDAPI_KEY = os.getenv("RAPIDAPI_KEY", "408bb9589amsh1872fe8447998b3p14706bjsnc0f242a84e50")
+PORT = int(os.getenv("PORT", 8000))
+HOST = os.getenv("HOST", "0.0.0.0")  # Use 0.0.0.0 to listen on all interfaces
+
+# Configure CORS with environment variable
+FRONTEND_URL = os.getenv("FRONTEND_URL", "*")
 
 SUPPORTED_PLATFORMS = {
     "youtube.com": "youtube",
@@ -139,7 +130,7 @@ app = FastAPI()
 # Configure CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:8080", "http://localhost:8081", "http://192.168.8.104:8080", "http://192.168.8.104:8081", "http://127.0.0.1:8080", "http://127.0.0.1:8081", "http://localhost:8000", "http://127.0.0.1:8000"],
+    allow_origins=[FRONTEND_URL] if FRONTEND_URL != "*" else ["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -893,4 +884,4 @@ async def download_tiktok_video(request: VideoDownloadRequest):
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="127.0.0.1", port=8000) 
+    uvicorn.run(app, host=HOST, port=PORT) 

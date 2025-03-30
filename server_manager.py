@@ -26,7 +26,10 @@ class ServerManager:
     def start_frontend(self) -> None:
         """Start the frontend server"""
         print("Starting Frontend Server...")
-        frontend_cmd = ["npm", "run", "dev"]
+        frontend_cmd = [
+            "cmd", "/c",
+            "cd frontend && npm run dev"
+        ]
         frontend_process = subprocess.Popen(
             frontend_cmd,
             creationflags=subprocess.CREATE_NEW_CONSOLE
