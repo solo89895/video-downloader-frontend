@@ -1,5 +1,5 @@
 [build]
-  command = "git clone --depth 1 --no-checkout https://github.com/solo89895/video-downloader-frontend && cd video-downloader-frontend && npm install && npm run build"
+  command = "npm install && npm run build"
   publish = "dist"
 
 [[redirects]]
