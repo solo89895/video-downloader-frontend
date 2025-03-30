@@ -1,0 +1,10 @@
+{
+  "name": "video-downloader-functions",
+  "version": "1.0.0",
+  "description": "Netlify functions for video downloading",
+  "main": "api.js",
+  "dependencies": {
+    "yt-dlp-exec": "^1.0.0",
+    "ffmpeg-static": "^5.2.0"
+  }
+} 
